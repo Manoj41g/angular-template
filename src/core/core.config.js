@@ -3,31 +3,31 @@
 
     var core = angular.module('app.core');
 
-    var config = {
-        appErrorPrefix: '[Angular Template Error] ',
-        appTitle: 'Angular Template',
-        imageBasePath: '/images/photos/',
-        unknownPersonImageSource: 'unknown_person.jpg'
-    };
+    core.config(handleRoute);
 
-    core.value('config', config);
+    handleRoute.$inject = ['$urlRouterProvider', '$stateProvider'];
 
-    core.config(configure);
+    // Routing through application
+    function handleRoute($urlRouterProvider,  $stateProvider){
+        $urlRouterProvider.otherwise('/login');
 
-    configure.$inject =
-        ['$compileProvider', '$logProvider', 'routerHelperProvider', 'exceptionHandlerProvider'];
+        $stateProvider
 
-    /* @ngInject */
-    function configure(
-        $compileProvider, $logProvider, routerHelperProvider, exceptionHandlerProvider) {
+        // Load login module
+        .state(
+            'login', {
+                url: '/login',
+                templateUrl: 'login/login.html',
+                controller: 'loginController as lc'
+        })
 
-        $compileProvider.debugInfoEnabled(false);
-
-        // turn debugging off/on (no info or warn)
-        if ($logProvider.debugEnabled) {
-            $logProvider.debugEnabled(true);
-        }
-        exceptionHandlerProvider.configure(config.appErrorPrefix);
-        routerHelperProvider.configure({docTitle: config.appTitle + ': '});
+        // Load dashboard module
+        .state(
+            'dashboard',{
+                url: '/dashboard',
+                templateUrl: 'dashboard/dashboard.html',
+                controller: 'DashboardController as dc'
+        })
     }
+
 })();

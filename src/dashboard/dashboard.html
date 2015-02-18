@@ -1,69 +1,88 @@
-<section id="dashboard-view" class="container-fluid">
+<div class="jumbotron">
+    <div class="container-fluid">
+        <div class="row table-view">
+            <div class="col-md-12">
+                    <header class="row tableView-header">
+                        <span class="pull-left col-md-7">
+                            <h4>Trader desktop</h4> 
+                        </span>
+                        <span class="pull-right col-md-3 text-right">
+                            <span class="font-italic" data-ng-bind="dc.username"></span> 
+                            <a class="signout-link" data-ng-click="dc.deleteSession()">Signout</a>
+                        </span>
+                    </header>   
+                    <div class="row btn-row">
+                        <span class="pull-left col-md-7">
+                            <div class="btn operation-btn sharp-border color-bright bg-black" data-toggle="modal" data-target="#createOrderModal">Trade</div>
+                            <div class="btn operation-btn sharp-border color-bright bg-black" data-ng-click="dc.deleteOrderRequest()">Delete All</div>
+                            <div class="btn operation-btn sharp-border color-bright bg-black" data-ng-click="dc.getOrderRequest()">Refresh</div>
+                        </span>
+                        <span class="pull-right col-md-5 text-right">
+                            <button class="btn btn-icon"><i class="glyphicon glyphicon-stats"></i></button>
+                            <button class="btn btn-icon"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span> 
+                    </div> 
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="table-responsive">
+                                <table class="table bg-white ordertable">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th class="text-right">Creation Time</th>
+                                            <th class="text-right">Side</th>
+                                            <th class="text-right">Symbol</th>
+                                            <th class="text-right">Quantity</th>
+                                            <th class="text-right">Placed</th>
+                                            <th class="text-right">Executed</th>
+                                            <th class="text-right">Limit price</th>
+                                            <th class="text-right">Priority</th>
+                                            <th class="text-right">Status</th>
+                                            <th class="text-right">Trader</th>
+                                        </tr>
+                                    </thead>
 
-    <h1>Asset Allocation</h1>
-
-    <div class="row">
-
-        <div class="col-sm-3 col-md-2 sidebar">
-            <dl>
-                <dt>Total Value</dt>
-                <dd>{{vm.account.market_value | currency:undefined:0}}</dd>
-                <dt>Your Investment</dt>
-                <dd>{{vm.account.investment | currency:undefined:0}}</dd>
-                <dt>Your Earnings</dt>
-                <dd>{{vm.account.earnings | currency:undefined:0}}</dd>
-                <dt>Cash</dt>
-                <dd>{{vm.account.cash | currency:undefined:0}}</dd>
-            </dl>
-
-            <div class="medialinks">
-                <a href="http://www.facebook.com/" target="_blank">
-                    <img src="images/facebook.png" width="30px" height="30px"/>
-                </a>
-                <a href="http://www.twitter.com/" target="_blank">
-                    <img src="images/twitter.png" width="30px" height="30px"/>
-                </a>
-                <a href="http://plus.google.com/" target="_blank">
-                    <img src="images/google-plus.png" width="30px" height="30px"/>
-                </a>
-                <a href="http://www.linkedin.com/" target="_blank">
-                    <img src="images/linkedin.png" width="30px" height="30px"/>
-                </a>
-            </div>
-        </div><!-- sidebar -->
-
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <div class="row">
-                <div class="col-xs-2 chart-column">
-                    <div data-at-barchart data-assets="vm.account.assets" class="chart-container"></div>
-                </div>
-
-                <div class="col-xs-10">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Asset Class</th>
-                                    <th class="text-right">Market Value</th>
-                                    <th class="text-right">Allocation</th>
-                                    <th class="text-right">Return</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr data-ng-repeat="a in vm.account.assets">
-                                    <td>{{a.asset_class}}</td>
-                                    <td class="text-right">{{a.market_value | currency:undefined:0}}</td>
-                                    <td class="text-right">{{a.percent_allocation | percentage:0}}</td>
-                                    <td class="text-right">{{a.percent_return | percentage:2}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    <tbody>
+                                        <tr data-ng-repeat = "data in dc.listOfOrder">
+                                            <td>{{ data.id }}</td>
+                                            <td class="text-right">{{ data.creationTime }}</td>
+                                            <td class="text-right">{{ data.side }}</td>
+                                            <td class="text-right">{{ data.symbol }}</td>
+                                            <td class="text-right">{{ data.quantity }}</td>
+                                            <td class="text-right">{{ data.quantityPlaced }}</td>
+                                            <td class="text-right">{{ data.quantityExecuted }}</td>
+                                            <td class="text-right">{{ data.limitPrice }}</td>
+                                            <td class="text-right">{{ data.priority }}</td>
+                                            <td class="text-right">{{ data.status }}</td>
+                                            <td class="text-right">{{ data.traderId }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div><!-- main -->
-
-    </div><!-- row -->
-
-</section>
+                    <!-- Modal - Create order -->
+                    <div class="modal fade" id="createOrderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <form data-ng-submit="dc.createOrderRequest()">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" aria-label="Close" data-ng-click="dc.resetNumberOfTrade()"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Create Multiple Trades</h4>
+                              </div>
+                              <div class="modal-body">
+                                <p>Enter number of trades</p>
+                                <input type="number" min="1" data-ng-model="dc.numberOfTrade" required/>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Create</button>
+                                <button type="button" class="btn btn-default" data-ng-click="dc.resetNumberOfTrade()">Cancel</button>
+                              </div>
+                            </div>
+                        </form>
+                      </div>
+                    </div><!-- modal -->
+                </div><!-- main -->
+        </div>
+    </div>
+</div>

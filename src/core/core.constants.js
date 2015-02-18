@@ -3,5 +3,5 @@
 
     angular
         .module('app.core')
-        .constant('api', 'http://localhost:3000/api');
+        .constant('api', 'http://localhost:8080');
 })();

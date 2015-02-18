@@ -1,9 +1,82 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
-body {
-    padding-top: 50px;
-}
+
 
 /* Remove border to delete the 1px line */
 .navbar-fixed-top {
     border: 0;
+}
+
+.main-content{
+	padding-top: 50px;
+}
+
+/* Trader Desktop */
+.bg-black{
+	background-color: $background-black;
+}
+.color-bright{
+	color: $color-bright;
+	&:hover {
+        color: $color-bright;;
+    }
+}
+.sharp-border{
+	border-radius: 0px;
+}
+.login-btn-wrap{
+	padding-top: 20px;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 220px;
+    overflow-x: hidden;
+}
+.ordertable th{
+    background-color: #ABABAB;
+}
+
+.table-view{
+	border: 1px solid #000000;
+	font-family: arial;
+
+	.tableView-header{
+		height: 70px;
+		font-size: 16px;
+		padding: 10px;
+		border-bottom: 1px solid #000000;
+
+		.font-italic{
+			font-style: italic;
+		}
+
+		.signout-link{
+			font-size: 12px;
+			color: #0000FF;
+			padding: 10px;
+		}
+	}
+	.btn-row{
+		padding: 10px;
+	}
+
+	.operation-btn{
+		width: 90px;
+		height: $height25;
+		line-height: 11px;
+	}
+	.btn-icon{
+		width: 30px;
+		height: $height25;
+		padding: 0;
+	}
+
+	.bg-white{
+		background-color: $color-bright;
+	}
+	.ordertable td{
+		height: 30px;
+		border-top: 1px solid #999999;
+		font-size: 14px;
+	}
 }

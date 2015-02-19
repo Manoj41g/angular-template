@@ -51,12 +51,12 @@
 		}
 
 		// Create new session on login
-		function createSession(){
+		function createSession(){			
 			if(lc.user != null){
-				sessionService.createSession(lc.user);
+				sessionService.createSession(JSON.stringify(lc.user));
 				$location.url("/dashboard");
 			}
-			console.log("lc.user " + lc.user);
+			
 		}
 
 

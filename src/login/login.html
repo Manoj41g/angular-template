@@ -9,9 +9,9 @@
 			<div class="col-md-4">
 				<form role="form">
 					<div class="dropdown">
-					  <select class="form-control input-small scrollable-menu" data-ng-model="lc.user" required>
-					  	<option data-ng-repeat="userName in lc.listOfUser">{{userName.name}}</option>
-					  </select>
+						<select name="users" class="form-control input-small scrollable-menu" data-ng-model="lc.user" ng-options = "opt.name for opt in lc.listOfUser" required>
+							<option value="">Select Username</option>
+						</select>
 					</div>
 				</form>
 			</div>

@@ -3,21 +3,23 @@
         <div class="row table-view">
             <div class="col-md-12">
                     <header class="row tableView-header">
-                        <span class="pull-left col-md-7">
+                        <span class="pull-left col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <h4>Trader desktop</h4> 
                         </span>
-                        <span class="pull-right col-md-3 text-right">
-                            <span class="font-italic" data-ng-bind="dc.username"></span> 
+                        <span class="pull-right col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right right-section">
+                            <span class="font-italic" data-ng-bind="dc.username.name"></span> 
                             <a class="signout-link" data-ng-click="dc.deleteSession()">Signout</a>
                         </span>
                     </header>   
                     <div class="row btn-row">
-                        <span class="pull-left col-md-7">
-                            <div class="btn operation-btn sharp-border color-bright bg-black" data-toggle="modal" data-target="#createOrderModal">Trade</div>
+                        <span class="pull-left col-lg-6 col-md-6 col-sm-8 col-xs-12">
+                            
+                                <div class="btn operation-btn sharp-border color-bright bg-black" data-toggle="modal" data-target="#createOrderModal">Trade</div>
+                            
                             <div class="btn operation-btn sharp-border color-bright bg-black" data-ng-click="dc.deleteOrderRequest()">Delete All</div>
                             <div class="btn operation-btn sharp-border color-bright bg-black" data-ng-click="dc.getOrderRequest()">Refresh</div>
                         </span>
-                        <span class="pull-right col-md-5 text-right">
+                        <span class="pull-right col-lg-6 col-md-6 col-sm-4 col-xs-12 text-right">
                             <button class="btn btn-icon"><i class="glyphicon glyphicon-stats"></i></button>
                             <button class="btn btn-icon"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span> 

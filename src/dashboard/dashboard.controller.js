@@ -110,15 +110,23 @@
             })
         }
 
-        // SOCKET
+    // Socket Services
+        // On Creating new order
         socketIoService.on('orderCreatedEvent', orderCreatedEvent);
 
+        // On Placement of orders created
+        socketIoService.on('placementCreatedEvent', placementCreatedEvent);
+
+        // On Execution of orders placed
+        socketIoService.on('executionCreatedEvent', executionCreatedEvent);
+        
+        // On Deletion of orders
+        socketIoService.on('allOrdersDeletedEvent', allOrdersDeletedEvent);
+        
         function orderCreatedEvent(data) {
             dc.listOfOrder.push(data);
         }
         
-        socketIoService.on('placementCreatedEvent', placementCreatedEvent);
-
         function placementCreatedEvent(data) {
                 angular.forEach(dc.listOfOrder, function (order,index) {
                 if (order.id == data.orderId) {
@@ -128,7 +136,6 @@
               });
         }
 
-        socketIoService.on('executionCreatedEvent', executionCreatedEvent);
         function executionCreatedEvent(data) {
                 angular.forEach(dc.listOfOrder, function (order,index) {
                 if (order.id == data.orderId) { 
@@ -139,7 +146,6 @@
             });
         }
 
-        socketIoService.on('allOrdersDeletedEvent', allOrdersDeletedEvent);
         function allOrdersDeletedEvent(data) {
                 dc.listOfOrder = [];
         }

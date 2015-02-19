@@ -14,10 +14,15 @@
 		return gos;
 		
 		function getOrdersList(){
-			console.log("in getOrdersList service")
-			return $http.get(api + '/orders').then(function(result){
+			return $http.get(api + '/orders')
+			.then(getOrdersListComplete)
+			.catch(function(message){
+				exception.catcher("XHR Failed for getInstruments")(message);
+			})
+
+			function getOrdersListComplete(result){
 				return result.data;
-			});
+			}
 		};
 	}
 })();

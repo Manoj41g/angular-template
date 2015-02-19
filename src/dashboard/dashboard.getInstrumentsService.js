@@ -1,3 +1,8 @@
+/*
+#   Author : Manoj Pandey
+#   Date : 17th Feb 2015
+#   Description : GET-instruments service
+*/
 (function(){
 	'use strict';
 
@@ -14,11 +19,15 @@
 		return gis;
 
 		function getInstruments(){
-			console.log("in getInstrumentsService");
-			return $http.get(api + "/instruments").then(function(data){
-				console.log(data.data);
-				return data.data;
+			return $http.get(api + "/instruments")
+			.then(getInstrumentsComplete)
+			.catch(function(message){
+				exception.catcher("XHR Failed for getInstruments")(message);
 			});
+
+			function getInstrumentsComplete(data){
+				return data.data;
+			}
 		};
 	}
 })();

@@ -1,16 +1,19 @@
+/*
+#	Author : Manoj Pandey
+#	Date : 16th Feb 2015
+#	Description : Login controller
+*/
 (function(){
 	'use strict';
 
 	angular.module('app.login')
 	.controller('loginController', loginController)
 
-	loginController.$inject = ['getUsersService', 'sessionService', '$location']
+	loginController.$inject = ['getUsersService', 'sessionService', '$location'];
 
 	function loginController(getUsersService, sessionService, $location){
 		var lc = this;
 		
-		console.log("login Controller ..LOADED");
-
 		lc.listOfUser = null;
 		lc.user = null;
 		lc.sessionPresent = null;
@@ -45,8 +48,9 @@
 		function getUsers(){
 			getUsersService.getUserList().then(function(data){
 				lc.listOfUser = data;
-				console.log("data");
-				console.log(data);
+			})
+			.catch(function(message){
+				exception.catcher('getUserList Service cannot succeed')(message);
 			});
 		}
 

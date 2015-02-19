@@ -1,3 +1,8 @@
+/*
+#   Author : Manoj Pandey
+#   Date : 17th Feb 2015
+#   Description : Delete-Order service
+*/
 (function(){
 	'use strict';
 
@@ -14,10 +19,13 @@
 		return dos;
 		
 		function deleteOrders(){
-			console.log("in delet orders service");
-			return $http.delete(api + "/orders").success(function(data, status){
+			return $http.delete(api + "/orders")
+			.success(function(data, status){
 				console.log("orders deleted successfully");
 			})
+			.catch(function(message){
+				exception.catcher("XHR Failed for deleteOrders")(message);
+			});
 		}
 	}
 })();

@@ -1,3 +1,8 @@
+/*
+#   Author : Manoj Pandey
+#   Date : 18th Feb 2015
+#   Description : Session service
+*/
 (function(){
 	'use strict';
 

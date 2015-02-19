@@ -1,3 +1,8 @@
+/*
+#	Author : Manoj Pandey
+#	Date : 16th Feb 2015
+#	Description : Login get user Service
+*/
 (function(){
 	'use strict';
 
@@ -14,9 +19,14 @@
 		return fo;
 		
 		function getUserList(){
-			return $http.get(api + "/users").then(function(result){
+			return $http.get(api + "/users").then(getUserListComplete) 
+			.catch(function(message) {
+                    exception.catcher('XHR Failed for getUserList')(message);
+                });
+
+			function getUserListComplete(result){
 				return result.data;
-			});
+			}
 		};
 
 	}

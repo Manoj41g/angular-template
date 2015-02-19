@@ -1,3 +1,8 @@
+/*
+#   Author : Manoj Pandey
+#   Date : 17th Feb 2015
+#   Description : Dashboard controller
+*/
 (function() {
     'use strict';
 
@@ -5,11 +10,11 @@
         .module('app.dashboard')
         .controller('DashboardController', DashboardController);
 
-    DashboardController.$inject = ['$scope','getOrdersService', 'createOrderService', 'deleteOrdersService', 'getInstrumentsService', 'sessionService', '$location'];
+    DashboardController.$inject = ['$scope','getOrdersService', 'createOrderService', 'deleteOrdersService', 'getInstrumentsService', 'sessionService', '$location', 'socketIoService'];
 
-    function DashboardController($scope, getOrdersService, createOrderService, deleteOrdersService, getInstrumentsService, sessionService, $location) {
+    function DashboardController($scope, getOrdersService, createOrderService, deleteOrdersService, getInstrumentsService, sessionService, $location, socketIoService) {
         var dc = this;
-        console.log("Dashboard controller ..LOADED");
+
         dc.numberOfTrade = null;
         dc.listOfOrder = null;
         dc.username = null;
@@ -23,7 +28,7 @@
         dc.deleteSession = deleteSession;
         dc.checkSession = checkSession;
         dc.getInstrumentsRequest = getInstrumentsRequest; 
-        var socket = io.connect('http://localhost:8080');
+    //    var socket = io.connect('http://localhost:8080');
 
 
         init();
@@ -35,10 +40,8 @@
         }
 
         function checkSession(){
-            console.log("in checksession");
-        //    console.log(JSON.parse(sessionService.getSession()));
+            // get data stored in session storage
             dc.username = JSON.parse(sessionService.getSession());
-          //  console.log(dc.username);
             if(null == dc.username){
                 deleteSession();
             }
@@ -49,18 +52,14 @@
 
         // GET Orders created
         function getOrderRequest(){
-         //   console.log("in getOrderRequest--");
             getOrdersService.getOrdersList().then(function(data){
-            //    console.log("in getOrderList--");
-                dc.listOfOrder = data;  // todo after creating order from app
-           //     console.log(dc.listOfOrder);
+                dc.listOfOrder = data;
             })
         }
 
        
         // POST to Create Order
         function createOrderRequest(){
-         //   console.log("in create order request" + dc.numberOfTrade);
             if(dc.numberOfTrade !== null && dc.numberOfTrade > 0){
                 dc.numberOfTrade -= 1;
                 dc.createOrderData = createData(); 
@@ -68,6 +67,7 @@
                 createOrderRequest();
             }
             else{
+                // Close create order modal
                 $('#createOrderModal').modal('toggle');
                 return "";
             }
@@ -87,7 +87,6 @@
 
         // Reset the number given in create-order popup
         function resetNumberOfTrade(){
-        //    console.log("in resetNumber OfTrade");
             dc.numberOfTrade = null;
             $('#createOrderModal').modal('toggle');
         }
@@ -108,44 +107,41 @@
         function getInstrumentsRequest(){
             getInstrumentsService.getInstruments().then(function(data){
                 dc.instruments = data;
-        //        console.log("in get Instruments Request")
-        //        console.log(data);
             })
         }
 
         // SOCKET
-        socket.on('orderCreatedEvent', function (data) {
-            $scope.$apply(function() {
-                dc.listOfOrder.push(data);
-            });
+        socketIoService.on('orderCreatedEvent', orderCreatedEvent);
 
-        });
-        socket.on('placementCreatedEvent', function (data) {
-            $scope.$apply(function() {
+        function orderCreatedEvent(data) {
+            dc.listOfOrder.push(data);
+        }
+        
+        socketIoService.on('placementCreatedEvent', placementCreatedEvent);
+
+        function placementCreatedEvent(data) {
                 angular.forEach(dc.listOfOrder, function (order,index) {
                 if (order.id == data.orderId) {
                     dc.listOfOrder[index].quantityPlaced = data.quantityPlaced;
                     dc.listOfOrder[index].status = data.status;
                  }
               });
-            });
-        });
-        socket.on('executionCreatedEvent', function (data) {
-            $scope.$apply(function() {
+        }
+
+        socketIoService.on('executionCreatedEvent', executionCreatedEvent);
+        function executionCreatedEvent(data) {
                 angular.forEach(dc.listOfOrder, function (order,index) {
                 if (order.id == data.orderId) { 
                     dc.listOfOrder[index].quantityExecuted = data.quantityExecuted;
                     dc.listOfOrder[index].executionPrice = data.executionPrice;
                     dc.listOfOrder[index].status = data.status;
                  }
-              });
             });
-        });
-        socket.on('allOrdersDeletedEvent', function (data) {
-            $scope.$apply(function() {
-                dc.listOfOrder = [];
-            });
-        });
+        }
 
+        socketIoService.on('allOrdersDeletedEvent', allOrdersDeletedEvent);
+        function allOrdersDeletedEvent(data) {
+                dc.listOfOrder = [];
+        }
     }
 })();

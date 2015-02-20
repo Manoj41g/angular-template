@@ -18,19 +18,18 @@
                     </header>   
                     <div class="row btn-row">
                         <span class="pull-left col-lg-6 col-md-6 col-sm-8 col-xs-12">
-                            
-                                <div class="btn operation-btn sharp-border color-bright bg-black" data-toggle="modal" data-target="#createOrderModal">Trade</div>
-                            
+                            <div class="btn operation-btn sharp-border color-bright bg-black" data-toggle="modal" data-target="#createOrderModal">Trade</div>
                             <div class="btn operation-btn sharp-border color-bright bg-black" data-ng-click="dc.deleteOrderRequest()">Delete All</div>
                             <div class="btn operation-btn sharp-border color-bright bg-black" data-ng-click="dc.getOrderRequest()">Refresh</div>
                         </span>
                         <span class="pull-right col-lg-6 col-md-6 col-sm-4 col-xs-12 text-right">
-                            <button class="btn btn-icon"><i class="glyphicon glyphicon-stats"></i></button>
-                            <button class="btn btn-icon"><i class="glyphicon glyphicon-calendar"></i></button>
+                            <button class="btn btn-icon chart-btn sharp-border" data-ng-click="dc.toggleDataContainer($event, 'chart')"><i class="glyphicon glyphicon-stats"></i></button>
+                            <button class="btn btn-icon table-btn selected-btn sharp-border" data-ng-click="dc.toggleDataContainer($event, 'table')"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span> 
                     </div> 
                     <div class="row">
-                        <div class="col-xs-12">
+                    <!-- Table view-->
+                        <div class="col-xs-12 data-container" data-ng-show="dc.showView">
                             <div class="table-responsive">
                                 <table class="table bg-white ordertable">
                                     <thead>
@@ -38,6 +37,45 @@
                                             <th>Id</th>
                                             <th class="text-right">Creation Time</th>
                                             <th class="text-right">Side</th>
+                                            <th class="text-right">Symbol</th>
+                                            <th class="text-right">Quantity</th>
+                                            <th class="text-right">Placed</th>
+                                            <th class="text-right">Executed</th>
+                                            <th class="text-right">Limit price</th>
+                                            <th class="text-right">Priority</th>
+                                            <th class="text-right">Status</th>
+                                            <th class="text-right">Trader</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr data-ng-repeat = "data in dc.listOfOrder">
+                                            <td>{{ data.id }}</td>
+                                            <td class="text-right">{{ data.creationTime }}</td>
+                                            <td class="text-right">{{ data.side }}</td>
+                                            <td class="text-right">{{ data.symbol }}</td>
+                                            <td class="text-right">{{ data.quantity }}</td>
+                                            <td class="text-right">{{ data.quantityPlaced }}</td>
+                                            <td class="text-right">{{ data.quantityExecuted }}</td>
+                                            <td class="text-right">{{ data.limitPrice }}</td>
+                                            <td class="text-right">{{ data.priority }}</td>
+                                            <td class="text-right">{{ data.status }}</td>
+                                            <td class="text-right">{{ data.traderId }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    <!-- Chart view -->
+                    <div class="col-xs-12 data-container" data-ng-hide="dc.showView">
+                            <div class="table-responsive">
+                                <table class="table bg-white ordertable">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th class="text-right">asdasd</th>
+                                            <th class="text-right">asdasd</th>
                                             <th class="text-right">Symbol</th>
                                             <th class="text-right">Quantity</th>
                                             <th class="text-right">Placed</th>

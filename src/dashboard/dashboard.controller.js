@@ -28,17 +28,33 @@
         dc.deleteSession = deleteSession;
         dc.checkSession = checkSession;
         dc.getInstrumentsRequest = getInstrumentsRequest; 
-    //    var socket = io.connect('http://localhost:8080');
+        dc.toggleDataContainer = toggleDataContainer;
+        dc.showView = true; 
 
 
         init();
 
+    // Socket Services
+        // On Creating new order
+        socketIoService.on('orderCreatedEvent', orderCreatedEvent);
+
+        // On Placement of orders created
+        socketIoService.on('placementCreatedEvent', placementCreatedEvent);
+
+        // On Execution of orders placed
+        socketIoService.on('executionCreatedEvent', executionCreatedEvent);
+        
+        // On Deletion of orders
+        socketIoService.on('allOrdersDeletedEvent', allOrdersDeletedEvent);
+
+        // call on page load
         function init(){
             checkSession();
             getOrderRequest();
             getInstrumentsRequest();
         }
 
+        // Check if session of current user exist
         function checkSession(){
             // get data stored in session storage
             dc.username = JSON.parse(sessionService.getSession());
@@ -110,19 +126,7 @@
             })
         }
 
-    // Socket Services
-        // On Creating new order
-        socketIoService.on('orderCreatedEvent', orderCreatedEvent);
-
-        // On Placement of orders created
-        socketIoService.on('placementCreatedEvent', placementCreatedEvent);
-
-        // On Execution of orders placed
-        socketIoService.on('executionCreatedEvent', executionCreatedEvent);
-        
-        // On Deletion of orders
-        socketIoService.on('allOrdersDeletedEvent', allOrdersDeletedEvent);
-        
+        // Socket service         
         function orderCreatedEvent(data) {
             dc.listOfOrder.push(data);
         }
@@ -148,6 +152,20 @@
 
         function allOrdersDeletedEvent(data) {
                 dc.listOfOrder = [];
+        }
+
+        // Toggle Table and Chart view on dashboard template
+        function toggleDataContainer(element, viewType){
+            if(viewType == 'chart'){
+                dc.showView = false;
+                $(".chart-btn").addClass("selected-btn");
+                $(".table-btn").removeClass("selected-btn");
+            }
+            else{
+                dc.showView = true;
+                 $(".chart-btn").removeClass("selected-btn");
+                 $(".table-btn").addClass("selected-btn");
+            }
         }
     }
 })();
